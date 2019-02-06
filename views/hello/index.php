@@ -1,0 +1,1 @@
+<h1 style="color: #3c763d; text-align: center"><?= $message ?></h1>

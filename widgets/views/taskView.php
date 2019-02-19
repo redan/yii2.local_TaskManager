@@ -8,7 +8,7 @@ use yii\helpers\Url;
 ?>
 
 <div class="task-container">
-    <a href="<?= Url::to(['admin-task/view', 'id' => $model->id])?>">
+    <a href="<?= Url::to(['tasks/one', 'id' => $model->id])?>">
         <div class="task">
             <div><?= $model->name ?></div>
             <div><?= $model->description ?></div>

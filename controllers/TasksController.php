@@ -10,11 +10,14 @@ namespace app\controllers;
 
 
 use app\models\filters\TasksSearch;
+use app\models\forms\TaskAttachmentsAddForm;
+use app\models\tables\TaskComments;
 use app\models\tables\Tasks;
 use app\models\tables\TaskStatuses;
 use app\models\tables\Users;
 use yii\web\Controller;
 use Yii;
+use yii\web\UploadedFile;
 
 class TasksController extends Controller
 {
@@ -39,6 +42,9 @@ class TasksController extends Controller
             'model' => $model,
             'usersList' => $usersList,
             'taskStatuses' => $taskStatuses,
+            'userId' => \Yii::$app->user->id,
+            'taskCommentForm' => new TaskComments(),
+            'taskAttachmentForm' => new TaskAttachmentsAddForm(),
         ]);
     }
 
@@ -70,5 +76,30 @@ class TasksController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionAddComment()
+    {
+        $model = new TaskComments();
+        if($model->load(\Yii::$app->request->post()) && $model->save()){
+            \Yii::$app->session->setFlash('success', "Комментарий добавлен");
+        }else {
+            \Yii::$app->session->setFlash('error', "Не удалось добавить комментарий");
+        }
+        $this->redirect(\Yii::$app->request->referrer);
+
+    }
+
+    public function actionAddAttachment()
+    {
+        $model = new TaskAttachmentsAddForm();
+        $model->load(\Yii::$app->request->post());
+        $model->file = UploadedFile::getInstance($model, 'file');
+        if($model->save()){
+            \Yii::$app->session->setFlash('success', "Файл добавлен");
+        }else {
+            \Yii::$app->session->setFlash('error', "Не удалось добавить файл");
+        }
+        $this->redirect(\Yii::$app->request->referrer);
     }
 }

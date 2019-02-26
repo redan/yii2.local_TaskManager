@@ -7,6 +7,8 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\tables\Tasks */
 /* @var $userList app\models\tables\Users[]*/
+/**@var \app\models\tables\TaskComments $taskCommentForm */
+/**@var \app\models\tables\TaskAttachments $taskAttachmentForm */
 
 
 $this->title = 'View/change: ' . $model->name;
@@ -38,5 +40,42 @@ $this->params['breadcrumbs'][] = 'View/change';
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
-
 <?php ActiveForm::end(); ?>
+
+<div class="attachments">
+    <h3>Вложения</h3>
+    <?php $form = ActiveForm::begin([
+        'action' => Url::to(['tasks/add-attachment']),
+        'options' => ['class' => "form-inline"]
+    ]);?>
+    <?=$form->field($taskAttachmentForm, 'taskId')->hiddenInput(['value' => $model->id])->label(false);?>
+    <?=$form->field($taskAttachmentForm, 'file')->fileInput();?>
+    <?=Html::submitButton("Добавить",['class' => 'btn btn-default']);?>
+    <?ActiveForm::end()?>
+    <hr>
+    <div class="attachments-history">
+        <?foreach ($model->taskAttachments as $file): ?>
+            <a href="/img/tasks/<?=$file->path?>">
+                <img src="/img/tasks/small/<?=$file->path?>" alt="">
+            </a>
+        <?php endforeach;?>
+    </div>
+    <div class="task-history">
+        <div class="comments">
+            <h3>Комментарии</h3>
+            <?php $form = ActiveForm::begin(['action' => Url::to(['tasks/add-comment'])]);?>
+            <?=$form->field($taskCommentForm, 'user_id')->hiddenInput(['value' => $userId])->label(false);?>
+            <?=$form->field($taskCommentForm, 'task_id')->hiddenInput(['value' => $model->id])->label(false);?>
+            <?=$form->field($taskCommentForm, 'content')->textInput();?>
+            <?=Html::submitButton("Добавить",['class' => 'btn btn-default']);?>
+            <?ActiveForm::end()?>
+            <hr>
+            <div class="comment-history">
+                <?foreach ($model->taskComments as $comment): ?>
+                    <p><strong><?=$comment->user->login?></strong>: <?=$comment->content?></p>
+                <?php endforeach;?>
+            </div>
+        </div>
+
+    </div>
+</div>

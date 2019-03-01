@@ -12,6 +12,14 @@ class Bootstrap extends Component
     public function init()
     {
         $this->attachEventHandlers();
+        $this->languageSet();
+    }
+
+    public function languageSet()
+    {
+        if($lang = \Yii::$app->session->get('lang')){
+            \Yii::$app->language = $lang;
+        }
     }
 
     protected function attachEventHandlers(){

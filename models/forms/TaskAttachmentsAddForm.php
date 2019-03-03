@@ -14,13 +14,14 @@ class TaskAttachmentsAddForm extends Model
     /** @var  UploadedFile */
     public $file;
 
-    protected $originalDir = '@img/tasks/';
-    protected $copiesDir = '@img/tasks/small/';
+    protected $originalDir = '@webroot/img/tasks/';
+    protected $copiesDir = '@webroot/img/tasks/small/';
 
     protected $filename;
     protected $filepath;
 
     protected $model;
+
 
     public function rules()
     {

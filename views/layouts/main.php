@@ -38,6 +38,10 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
+                ['label' => Yii::t('app', 'lang_label'), 'items' =>[
+                        ['label' => 'English', 'url' => ['/site/language', 'lang' => 'en']],
+                        ['label' => 'Русский', 'url' => ['/site/language', 'lang' => 'ru']],
+                ]],
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
@@ -52,7 +56,11 @@ AppAsset::register($this);
                 )
                 . Html::endForm()
                 . '</li>'
-            )
+            ),
+            ['label' => Yii::t('app', 'lang_label'), 'items' =>[
+                    ['label' => 'English', 'url' => ['/site/language', 'lang' => 'en']],
+                    ['label' => 'Русский', 'url' => ['/site/language', 'lang' => 'ru']],
+            ]],
         ],
     ]);
     NavBar::end();

@@ -11,10 +11,10 @@ use yii\helpers\Url;
 /**@var \app\models\tables\TaskAttachments $taskAttachmentForm */
 
 
-$this->title = 'View/change: ' . $model->name;
+$this->title = Yii::t('app', 'Task_change') . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => \yii\helpers\Url::to(['admin-task/view', 'id' => $model->id])];
-$this->params['breadcrumbs'][] = 'View/change';
+$this->params['breadcrumbs'][] = Yii::t('app', 'Task_change');
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>
@@ -22,13 +22,16 @@ $this->params['breadcrumbs'][] = 'View/change';
 <?php $form = ActiveForm::begin(['action' => Url::to(['tasks/save', 'id' => $model->id])]);?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <?= $form->field($model, 'creator_id')->dropDownList($usersList) ?>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <?= $form->field($model, 'status_id')->dropDownList($taskStatuses) ?>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
+            <?= $form->field($model, 'responsible_id')->dropDownList($usersList) ?>
+        </div>
+        <div class="col-lg-3">
             <?= $form->field($model, 'deadline')->widget(\yii\jui\DatePicker::className(),[
                 'dateFormat' => 'yyyy/MM/dd',
             ]) ?>
@@ -72,7 +75,7 @@ $this->params['breadcrumbs'][] = 'View/change';
             <hr>
             <div class="comment-history">
                 <?foreach ($model->taskComments as $comment): ?>
-                    <p><strong><?=$comment->user->login?></strong>: <?=$comment->content?></p>
+                    <p><strong><?=$comment->user->username?></strong>: <?=$comment->content?></p>
                 <?php endforeach;?>
             </div>
         </div>

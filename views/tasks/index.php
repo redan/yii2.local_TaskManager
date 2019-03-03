@@ -17,7 +17,7 @@ $model = \app\models\tables\Tasks::find()->all();
                 'tag' => 'div',
                 'class' => 'tasks_container'
                 ],
-        'layout' => "{pager}\n{items}\n{summary}",
+        'layout' => "{items}\n{pager}",
         'itemView' => function($model)
         {
             return \app\widgets\TaskWidget::widget(['model' => $model]);

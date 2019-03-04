@@ -4,7 +4,6 @@
 
 $this->title = 'Tasks';
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerCssFile('css/task.css');
 
 $model = \app\models\tables\Tasks::find()->all();
 ?>

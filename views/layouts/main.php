@@ -38,10 +38,7 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-                ['label' => Yii::t('app', 'lang_label'), 'items' =>[
-                        ['label' => 'English', 'url' => ['/site/language', 'lang' => 'en']],
-                        ['label' => 'Русский', 'url' => ['/site/language', 'lang' => 'ru']],
-                ]],
+            ['label' => 'Tasks', 'url' => ['tasks/index']],
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],

@@ -12,7 +12,11 @@ class MailController extends Controller
 {
     public function actionMailDead()
     {
-        $model = Tasks::find()->where(['<','DATEDIFF(now(), deadline)', 2])->all();
+        /** @var Tasks $model */
+        $model = Tasks::find()
+            ->where(['DATEDIFF(now(), tasks.deadline) <= 1'])
+            ->with('responsible')
+            ->all();
         foreach ($model as $value){
             \Yii::$app->mailer->compose()
                 ->setTo($value->responsible)

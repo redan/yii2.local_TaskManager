@@ -15,12 +15,44 @@ use app\models\tables\TaskComments;
 use app\models\tables\Tasks;
 use app\models\tables\TaskStatuses;
 use app\models\tables\Users;
+use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use Yii;
 use yii\web\UploadedFile;
 
 class TasksController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['one'],
+                'rules' => [
+                    [
+                        'actions' => ['one'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            [
+                'class' => 'yii\filters\PageCache',
+                'only' => ['search'],
+                'duration' => 60,
+                'variations' => [
+                    \Yii::$app->language,
+                ],
+                'dependency' => [
+                    'class' => 'yii\caching\DbDependency',
+                    'sql' => 'SELECT COUNT(*) FROM post',
+                ],
+            ],
+
+        ];
+    }
+
     public function actionIndex()
     {
         $searchModel = new TasksSearch();
@@ -60,23 +92,7 @@ class TasksController extends Controller
         $this->redirect(\Yii::$app->request->referrer);
     }
 
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => 'yii\filters\PageCache',
-                'only' => ['search'],
-                'duration' => 60,
-                'variations' => [
-                    \Yii::$app->language,
-                ],
-                'dependency' => [
-                    'class' => 'yii\caching\DbDependency',
-                    'sql' => 'SELECT COUNT(*) FROM post',
-                ],
-            ],
-        ];
-    }
+
 
     public function actionAddComment()
     {
@@ -101,5 +117,14 @@ class TasksController extends Controller
             \Yii::$app->session->setFlash('error', "Не удалось добавить файл");
         }
         $this->redirect(\Yii::$app->request->referrer);
+    }
+
+    public function actionDelete($id)
+
+    {
+        if($model = Tasks::findOne($id)) {
+            $model->delete();
+        }
+        return $this->redirect(['tasks/index']);
     }
 }

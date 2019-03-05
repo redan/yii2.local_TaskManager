@@ -44,7 +44,17 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Task_change');
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 <?php ActiveForm::end(); ?>
-
+<div class="form-group">
+    <? if(Yii::$app->user->can('TaskDelete')):?>
+    <?php $form = ActiveForm::begin([
+            'action' => Url::to(['tasks/delete', 'id' => $model->id])
+    ]) ?>
+        <div class="form-group">
+            <?= Html::submitButton('Delete', ['class' => 'btn btn-danger']) ?>
+        </div>
+    <?php ActiveForm::end(); ?>
+    <? endif;?>
+</div>
 <div class="attachments">
     <h3>Вложения</h3>
     <?php $form = ActiveForm::begin([

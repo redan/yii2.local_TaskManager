@@ -14,6 +14,9 @@ $config = [
     ],
     'components' => [
         'bootstrap' => app\components\Bootstrap::class,
+        'authManager' => [
+            'class' => \yii\rbac\DbManager::class,
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'M0zgaQ47vn0Zf198mP5U2gopXCRkcaMt',
@@ -64,6 +67,20 @@ $config = [
 
     ],
     'params' => $params,
+    'modules' => [
+        'rbac' => [
+            'class' => 'githubjeka\rbac\Module',
+            'as access' => [ // if you need to set access
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'] // all auth users
+                    ],
+                ]
+            ]
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {
